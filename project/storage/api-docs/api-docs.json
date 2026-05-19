@@ -1,0 +1,429 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Notification Service",
+        "description": "Сервис рассылки уведомлений",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/notifications": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "operationId": "a1ae991b863d586cfe9172c9f96399ce",
+                "responses": {
+                    "200": {
+                        "description": "Список уведомлений (первая страница)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Notification"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Notifications"
+                ],
+                "operationId": "5ce63496435eb78b5c4c52c7d398dfcf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "request_key",
+                                    "message",
+                                    "channel",
+                                    "priority",
+                                    "subscribers"
+                                ],
+                                "properties": {
+                                    "request_key": {
+                                        "type": "string",
+                                        "example": "example_key"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Example message"
+                                    },
+                                    "channel": {
+                                        "type": "string",
+                                        "example": "email",
+                                        "enum": [
+                                            "email",
+                                            "sms"
+                                        ]
+                                    },
+                                    "priority": {
+                                        "type": "string",
+                                        "example": "low",
+                                        "enum": [
+                                            "high",
+                                            "low"
+                                        ]
+                                    },
+                                    "subscribers": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Уведомление принято в работу"
+                    },
+                    "200": {
+                        "description": "Уведомление уже в работе"
+                    }
+                }
+            }
+        },
+        "/notifications/page/{page}": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "operationId": "4add4c37094b934f3ac932b15650e5fe",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Номер страницы",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список уведомлений (постраничный)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Notification"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/notifications/listBySubscriber/{subscriberId}": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "operationId": "f7b67e7e0fd7a26fc74cc39f46da758b",
+                "parameters": [
+                    {
+                        "name": "subscriberId",
+                        "in": "path",
+                        "description": "Идентификатор подписчика",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список уведомлений (первая страница)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Notification"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/notifications/listBySubscriber/{subscriberId}/page/{page}": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "operationId": "a747336403429b137f285bc38815fb04",
+                "parameters": [
+                    {
+                        "name": "subscriberId",
+                        "in": "path",
+                        "description": "Идентификатор подписчика",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Номер страницы",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список уведомлений (постраничный)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Notification"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/subscribers": {
+            "get": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "operationId": "e4185e9d10e73eda0fa6b23775117e39",
+                "responses": {
+                    "200": {
+                        "description": "Список подписчиков (первая страница)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Subscriber"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "operationId": "7a6bb14e6793922b9388f0d82c459e5d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+7 999 000 00 00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Подписчик сохранён",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "id": {
+                                        "summary": "Object with subscriber id",
+                                        "value": {
+                                            "id": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/subscribers/page/{page}": {
+            "get": {
+                "tags": [
+                    "Subscribers"
+                ],
+                "operationId": "3acb346be9636680927c7ed0ac6b605f",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Номер страницы",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список подписчиков (постраничный)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Subscriber"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Notification": {
+                "title": "Notification",
+                "description": "Уведомление подписчику",
+                "required": [
+                    "id",
+                    "request_key",
+                    "message",
+                    "channel",
+                    "priority",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "request_key": {
+                        "type": "string",
+                        "example": "key_example"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Example message"
+                    },
+                    "channel": {
+                        "type": "string",
+                        "example": "email",
+                        "enum": [
+                            "email",
+                            "sms"
+                        ]
+                    },
+                    "priority": {
+                        "type": "string",
+                        "example": "low",
+                        "enum": [
+                            "high",
+                            "low"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "queued",
+                        "default": "queued",
+                        "enum": [
+                            "queued",
+                            "sent",
+                            "delivered",
+                            "rejected"
+                        ]
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Subscriber": {
+                "title": "Subscriber",
+                "description": "Подписчик",
+                "required": [
+                    "id",
+                    "email",
+                    "phone"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "example@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+7 999 000 00 00"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Notifications",
+            "description": "Notifications"
+        },
+        {
+            "name": "Subscribers",
+            "description": "Subscribers"
+        }
+    ]
+}

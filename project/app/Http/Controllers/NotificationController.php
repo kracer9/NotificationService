@@ -6,9 +6,42 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Notification;
 use App\Exceptions\NotificationDuplicate;
+use OpenApi\Attributes as OA;
 
 class NotificationController extends Controller
 {
+    #[OA\Post(
+        path: '/notifications',
+        tags: ['Notifications'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["request_key", "message", "channel", "priority", "subscribers"],
+                properties: [
+                    new OA\Property(property: "request_key", type: "string", example: "example_key"),
+                    new OA\Property(property: "message", type: "string", example: "Example message"),
+                    new OA\Property(property: "channel", type: "string", enum: ["email", "sms"], example: "email"),
+                    new OA\Property(property: "priority", type: "string", enum: ["high", "low"], example: "low"),
+                    new OA\Property(
+                        property: "subscribers",
+                        type: "array",
+                        items: new OA\Items(type: "integer"),
+                        example: [1]
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 202,
+                description: 'Уведомление принято в работу',
+            ),
+            new OA\Response(
+                response: 200,
+                description: 'Уведомление уже в работе',
+            )
+        ],
+    )]
     public function publish(Request $request): JsonResponse
     {
         $notificationData = $request->validate([
@@ -31,6 +64,43 @@ class NotificationController extends Controller
         return response()->json(['status' => 'Accepted'], 202);
     }
 
+    #[OA\Get(
+        path: '/notifications',
+        tags: ['Notifications'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Список уведомлений (первая страница)',
+                content: new OA\JsonContent(
+                    type: "array",
+                    items: new OA\Items(ref: "#/components/schemas/Notification")
+                )
+            )
+        ],
+    )]
+    #[OA\Get(
+        path: '/notifications/page/{page}',
+        tags: ['Notifications'],
+        parameters: [
+            new OA\Parameter(
+                name: "page",
+                description: "Номер страницы",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Список уведомлений (постраничный)',
+                content: new OA\JsonContent(
+                    type: "array",
+                    items: new OA\Items(ref: "#/components/schemas/Notification")
+                )
+            )
+        ],
+    )]
     public function list(int $page = 1): JsonResponse
     {
         $service = new Notification\ReaderService();
@@ -38,6 +108,59 @@ class NotificationController extends Controller
         return response()->json(['data' => $notifications]);
     }
 
+    #[OA\Get(
+        path: '/notifications/listBySubscriber/{subscriberId}',
+        tags: ['Notifications'],
+        parameters: [
+            new OA\Parameter(
+                name: "subscriberId",
+                description: "Идентификатор подписчика",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Список уведомлений (первая страница)',
+                content: new OA\JsonContent(
+                    type: "array",
+                    items: new OA\Items(ref: "#/components/schemas/Notification")
+                )
+            )
+        ],
+    )]
+    #[OA\Get(
+        path: '/notifications/listBySubscriber/{subscriberId}/page/{page}',
+        tags: ['Notifications'],
+        parameters: [
+            new OA\Parameter(
+                name: "subscriberId",
+                description: "Идентификатор подписчика",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            ),
+            new OA\Parameter(
+                name: "page",
+                description: "Номер страницы",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Список уведомлений (постраничный)',
+                content: new OA\JsonContent(
+                    type: "array",
+                    items: new OA\Items(ref: "#/components/schemas/Notification")
+                )
+            )
+        ],
+    )]
     public function listBySubscriber(string $subscriberId, int $page = 1): JsonResponse
     {
         $service = new Notification\ReaderService();
