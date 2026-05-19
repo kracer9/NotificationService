@@ -90,13 +90,15 @@ return [
         ],
 
         'rabbitmq' => [
-            'driver' => 'rabitmq',
+            'driver' => 'rabbitmq',
             'hosts' => [
-                'host' => env('RABBITMQ_HOST', '127.0.0.1'),
-                'port' => env('RABBITMQ_PORT', '5672'),
-                'user' => env('RABBITMQ_USER', 'guest'),
-                'password' => env('RABBITMQ_PASSWORD', 'guest'),
-                'vhost' => env('RABBITMQ_VHOST', '/'),
+                [
+                    'host' => env('RABBITMQ_HOST', '127.0.0.1'),
+                    'port' => env('RABBITMQ_PORT', 15672),
+                    'user' => env('RABBITMQ_USER', 'rabbitmq'),
+                    'password' => env('RABBITMQ_PASSWORD', 'rabbitmq'),
+                    'vhost' => env('RABBITMQ_VHOST', '/'),
+                ],
             ],
         ],
     ],
