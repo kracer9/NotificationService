@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class MockGateway implements GatewayInterface
 {
-    public function send(Notification $notification)
+    public function send(Notification $notification, callable $onSent, callable $onDelivered)
     {
         usleep(500000);
 
