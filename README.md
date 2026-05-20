@@ -2,15 +2,17 @@
 
 Проект решения тестового задания на реализацию микросервиса уведомлений.
 
-Шаги запуска проекта в docker:
+Шаги для запуска проекта в docker:
 
 1. В корне проекта скопируйте пример файла с настройками окружения .env.example в .env
 2. Поднимите докер контейнеры
-3. Создайте структуру данных в БД
+3. Установите зависимости приложения
+4. Создайте структуру данных в БД
 
 ```shell
 cp .env.example .env
 docker-compose up -d
+docker exec -it notification_app composer install
 docker exec -it notification_app php artisan migrate
 ```
 
