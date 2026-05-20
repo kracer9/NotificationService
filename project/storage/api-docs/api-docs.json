@@ -13,9 +13,20 @@
                 ],
                 "summary": "Получить список уведомлений",
                 "operationId": "d1b1bb2774f3243f1c2b8c3387019035",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Список уведомлений (первая страница)",
+                        "description": "Список уведомлений",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -72,13 +83,15 @@
                                             "low"
                                         ]
                                     },
-                                    "subscribers": {
+                                    "subscriber_ids": {
                                         "type": "array",
                                         "items": {
                                             "type": "integer"
                                         },
                                         "example": [
-                                            1
+                                            1,
+                                            2,
+                                            3
                                         ]
                                     }
                                 },
@@ -97,83 +110,13 @@
                 }
             }
         },
-        "/api/notifications/page/{page}": {
-            "get": {
-                "tags": [
-                    "Notifications"
-                ],
-                "summary": "Получить список уведомлений",
-                "operationId": "0e48ec368f152a3fb377c552305adc23",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "path",
-                        "description": "Номер страницы",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Список уведомлений (постраничный)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Notification"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/notifications/listBySubscriber/{subscriberId}": {
+        "/api/notifications/by_subscriber/{subscriberId}": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
                 "summary": "Получить список уведомлений подписчика",
-                "operationId": "ae413a115960cbca53020bd0d7681d30",
-                "parameters": [
-                    {
-                        "name": "subscriberId",
-                        "in": "path",
-                        "description": "Идентификатор подписчика",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Список уведомлений (первая страница)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Notification"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/notifications/listBySubscriber/{subscriberId}/page/{page}": {
-            "get": {
-                "tags": [
-                    "Notifications"
-                ],
-                "summary": "Получить список уведомлений подписчика",
-                "operationId": "26221f4f7c5c03b46eca6ccc2463d650",
+                "operationId": "24bd73473738b8efd98a8a1896c6b33e",
                 "parameters": [
                     {
                         "name": "subscriberId",
@@ -186,9 +129,9 @@
                     },
                     {
                         "name": "page",
-                        "in": "path",
+                        "in": "query",
                         "description": "Номер страницы",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         }
@@ -196,7 +139,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Список уведомлений (постраничный)",
+                        "description": "Список уведомлений",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -218,9 +161,20 @@
                 ],
                 "summary": "Получить список подписчиков",
                 "operationId": "b5fd9078577adbe9f216e478b37d375f",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Список подписчиков (первая страница)",
+                        "description": "Список подписчиков (постраничный)",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -275,43 +229,10 @@
                                     "id": {
                                         "summary": "Object with subscriber id",
                                         "value": {
-                                            "id": 1
+                                            "data": {
+                                                "id": 1
+                                            }
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/subscribers/page/{page}": {
-            "get": {
-                "tags": [
-                    "Subscribers"
-                ],
-                "summary": "Получить список подписчиков",
-                "operationId": "c795093cad5b941e2627b568ad21f079",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "path",
-                        "description": "Номер страницы",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Список подписчиков (постраничный)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Subscriber"
                                     }
                                 }
                             }

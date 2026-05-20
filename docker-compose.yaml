@@ -1,6 +1,8 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      target: ${APP_TARGET}
     container_name: notification_app
     env_file: ./.env
     volumes:
@@ -11,23 +13,27 @@ services:
       - rabbitmq
 
   high_priority_worker:
-    build: .
+    build:
+      context: .
+      target: ${APP_TARGET}
     container_name: notification_high_priority_worker
     command: php artisan queue:work --queue=high_priority
     env_file: ./.env
     volumes:
-      - .:/var/www
+      - ./project:/var/www
     depends_on:
       - postgres
       - rabbitmq
 
   low_priority_worker:
-    build: .
+    build:
+      context: .
+      target: ${APP_TARGET}
     container_name: notification_low_priority_worker
     command: php artisan queue:work --queue=low_priority
     env_file: ./.env
     volumes:
-      - .:/var/www
+      - ./project:/var/www
     depends_on:
       - postgres
       - rabbitmq
@@ -61,6 +67,10 @@ services:
     image: postgres:18.4
     container_name: notification_postgres
     env_file: ./.env
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - ${DB_PORT}:5432
     volumes:

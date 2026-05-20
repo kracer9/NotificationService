@@ -33,7 +33,9 @@ class SubscriberController extends Controller
                             example: "id",
                             summary: "Object with subscriber id",
                             value: [
-                                "id" => 1
+                                "data" => [
+                                    "id" => 1
+                                ]
                             ]
                         )
                     ]
@@ -58,27 +60,12 @@ class SubscriberController extends Controller
         path: '/api/subscribers',
         tags: ['Subscribers'],
         summary: "Получить список подписчиков",
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Список подписчиков (первая страница)',
-                content: new OA\JsonContent(
-                    type: "array",
-                    items: new OA\Items(ref: "#/components/schemas/Subscriber")
-                )
-            )
-        ],
-    )]
-    #[OA\Get(
-        path: '/api/subscribers/page/{page}',
-        tags: ['Subscribers'],
-        summary: "Получить список подписчиков",
         parameters: [
             new OA\Parameter(
                 name: "page",
                 description: "Номер страницы",
-                in: "path",
-                required: true,
+                in: "query",
+                required: false,
                 schema: new OA\Schema(type: "integer")
             ),
         ],

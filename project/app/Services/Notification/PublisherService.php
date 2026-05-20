@@ -49,7 +49,7 @@ class PublisherService
 
     private function findSubscribers(array $data): Collection
     {
-        return Subscriber::whereIn('id', $data['subscribers'])->get();
+        return Subscriber::whereIn('id', $data['subscriber_ids'])->get();
     }
 
     private function toQueue(Notification $notification)

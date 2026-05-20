@@ -24,10 +24,10 @@ class NotificationController extends Controller
                     new OA\Property(property: "channel", type: "string", enum: ["email", "sms"], example: "email"),
                     new OA\Property(property: "priority", type: "string", enum: ["high", "low"], example: "low"),
                     new OA\Property(
-                        property: "subscribers",
+                        property: "subscriber_ids",
                         type: "array",
                         items: new OA\Items(type: "integer"),
-                        example: [1]
+                        example: [1,2,3]
                     ),
                 ]
             )
@@ -50,8 +50,8 @@ class NotificationController extends Controller
             'message' => ['required', 'string'],
             'channel' => ['required', 'in:sms,email'],
             'priority' => ['required', 'in:high,low'],
-            'subscribers' => ['required', 'array'],
-            'subscribers.*' => ['int'],
+            'subscriber_ids' => ['required', 'array'],
+            'subscribers_ids.*' => ['int'],
         ]);
 
         try {
@@ -69,34 +69,19 @@ class NotificationController extends Controller
         path: '/api/notifications',
         tags: ['Notifications'],
         summary: "Получить список уведомлений",
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Список уведомлений (первая страница)',
-                content: new OA\JsonContent(
-                    type: "array",
-                    items: new OA\Items(ref: "#/components/schemas/Notification")
-                )
-            )
-        ],
-    )]
-    #[OA\Get(
-        path: '/api/notifications/page/{page}',
-        tags: ['Notifications'],
-        summary: "Получить список уведомлений",
         parameters: [
             new OA\Parameter(
                 name: "page",
                 description: "Номер страницы",
-                in: "path",
-                required: true,
+                in: "query",
+                required: false,
                 schema: new OA\Schema(type: "integer")
             ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: 'Список уведомлений (постраничный)',
+                description: 'Список уведомлений',
                 content: new OA\JsonContent(
                     type: "array",
                     items: new OA\Items(ref: "#/components/schemas/Notification")
@@ -112,31 +97,7 @@ class NotificationController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/notifications/listBySubscriber/{subscriberId}',
-        tags: ['Notifications'],
-        summary: "Получить список уведомлений подписчика",
-        parameters: [
-            new OA\Parameter(
-                name: "subscriberId",
-                description: "Идентификатор подписчика",
-                in: "path",
-                required: true,
-                schema: new OA\Schema(type: "integer")
-            ),
-        ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Список уведомлений (первая страница)',
-                content: new OA\JsonContent(
-                    type: "array",
-                    items: new OA\Items(ref: "#/components/schemas/Notification")
-                )
-            )
-        ],
-    )]
-    #[OA\Get(
-        path: '/api/notifications/listBySubscriber/{subscriberId}/page/{page}',
+        path: '/api/notifications/by_subscriber/{subscriberId}',
         tags: ['Notifications'],
         summary: "Получить список уведомлений подписчика",
         parameters: [
@@ -150,15 +111,15 @@ class NotificationController extends Controller
             new OA\Parameter(
                 name: "page",
                 description: "Номер страницы",
-                in: "path",
-                required: true,
+                in: "query",
+                required: false,
                 schema: new OA\Schema(type: "integer")
             ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: 'Список уведомлений (постраничный)',
+                description: 'Список уведомлений',
                 content: new OA\JsonContent(
                     type: "array",
                     items: new OA\Items(ref: "#/components/schemas/Notification")

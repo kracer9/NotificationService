@@ -1,4 +1,4 @@
-FROM php:8.4-fpm
+FROM php:8.4-fpm AS base
 
 RUN apt-get update && \
     apt-get install -y curl libpq-dev git unzip && \
@@ -12,4 +12,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin
 RUN composer config -g process-timeout 2000
 
+FROM base AS dev
+WORKDIR /var/www
+
+FROM base AS build
+COPY ./project /var/www
 WORKDIR /var/www
