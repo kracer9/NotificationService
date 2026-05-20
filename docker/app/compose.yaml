@@ -1,0 +1,33 @@
+services:
+  app:
+    build: .
+    container_name: notification_app
+    env_file: ../../.env
+    volumes:
+      - ../../project:/var/www
+    depends_on:
+      - redis
+      - postgres
+      - rabbitmq
+
+  high_priority_worker:
+    build: .
+    container_name: notification_high_priority_worker
+    command: php artisan queue:work --queue=high_priority
+    env_file: ../../.env
+    volumes:
+      - ../../project:/var/www
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  low_priority_worker:
+    build: .
+    container_name: notification_low_priority_worker
+    command: php artisan queue:work --queue=low_priority
+    env_file: ../../.env
+    volumes:
+      - ../../project:/var/www
+    depends_on:
+      - postgres
+      - rabbitmq

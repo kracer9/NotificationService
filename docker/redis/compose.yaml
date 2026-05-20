@@ -1,0 +1,13 @@
+services:
+  redis:
+    image: redis:8.6.3
+    container_name: notification_redis
+    env_file: ../../.env
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ../../data/redis:/data
+    deploy:
+      resources:
+        limits:
+          memory: ${REDIS_LIMIT_MEMORY}

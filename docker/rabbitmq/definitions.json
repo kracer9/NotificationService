@@ -1,0 +1,17 @@
+{
+    "queues":[
+        {
+            "name": "high_priority",
+            "vhost":"/", "durable":true,
+            "auto_delete":false,
+            "arguments":{}
+        },
+        {
+            "name": "low_priority",
+            "vhost":"/",
+            "durable":true,
+            "auto_delete":false,
+            "arguments":{}
+        }
+    ]
+}
