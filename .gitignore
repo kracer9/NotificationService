@@ -2,3 +2,4 @@
 vendor
 data
 .env
+*.drawio.bkp
