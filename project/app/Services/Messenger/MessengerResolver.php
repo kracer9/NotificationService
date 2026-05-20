@@ -4,7 +4,7 @@ namespace App\Services\Messenger;
 
 use App\Exceptions\UnkownChannel;
 
-class MessengerProvider
+class MessengerResolver
 {
     /**
      * @var array<string, MessengerGateway>
@@ -16,7 +16,7 @@ class MessengerProvider
         $this->gateways = $gateways;
     }
 
-    public function provide(string $channel): MessengerGateway
+    public function resolve(string $channel): MessengerGateway
     {
         if (isset($this->gateways[$channel])) {
             return $this->gateways[$channel];

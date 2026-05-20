@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PublisherService
 {
-    public function publish(array $data)
+    public function publish(array $data): array
     {
         $this->controlDuplication($data);
         $subscribers = $this->findSubscribers($data);
+        $results = [];
 
         foreach ($subscribers as $subscriber) {
             $notification = $subscriber->notifications()->create([
@@ -25,8 +26,15 @@ class PublisherService
                 'status' => 'queued',
             ]);
 
+            $results[] = [
+                'subscriber_id' => $subscriber->id,
+                'notification_id' => $notification->id,
+            ];
+
             $this->toQueue($notification);
         }
+
+        return $results;
     }
 
     private function controlDuplication(array $data)

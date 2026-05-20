@@ -102,10 +102,52 @@
                 },
                 "responses": {
                     "202": {
-                        "description": "Уведомление принято в работу"
+                        "description": "Уведомление принято в работу",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Accepted"
+                                        },
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "subscriber_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "notification_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "200": {
-                        "description": "Уведомление уже в работе"
+                        "description": "Уведомление уже в работе",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Already processing"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -4,7 +4,8 @@ namespace App\Jobs;
 
 use App\Models\Notification;
 use App\Exceptions\NotifyJobError;
-use App\Services\Messenger\MessengerProvider;
+use App\Services\Messenger\MessengerGateway;
+use App\Services\Messenger\MessengerResolver;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -15,6 +16,7 @@ class NotifyJob implements ShouldQueue
 
     private int $notificationId;
     private Notification $notification;
+    private MessengerGateway $gateway;
 
     public function __construct(int $notificationId)
     {
@@ -34,10 +36,11 @@ class NotifyJob implements ShouldQueue
         return config("notification.worker_by_priority.$priority.backoff");
     }
 
-    public function handle(MessengerProvider $provider): void
+    public function handle(MessengerResolver $resolver): void
     {
         $this->checkNotification();
-        $this->sendMessage($provider);
+        $this->resolveGateway($resolver);
+        $this->sendMessage();
     }
 
     public function failed(\Throwable $exception)
@@ -54,13 +57,23 @@ class NotifyJob implements ShouldQueue
             throw new NotifyJobError("Not found notification: {$this->notificationId}");
         }
         if ($this->notification->status !== 'queued') {
-            throw new NotifyJobError("Wrong notification status");
+            throw new NotifyJobError("Wrong notification status: {$this->notification->status}");
         }
     }
 
-    private function sendMessage(MessengerProvider $provider)
+    private function resolveGateway(MessengerResolver $resolver)
     {
-        $provider->provide($this->notification->channel)->send(
+        $this->setGateway($resolver->resolve($this->notification->channel));
+    }
+
+    private function setGateway(MessengerGateway $gateway)
+    {
+        $this->gateway = $gateway;
+    }
+
+    private function sendMessage()
+    {
+        $this->gateway->send(
             $this->notification,
             fn () => $this->onSent(),
             fn () => $this->onDelivered(),
@@ -74,6 +87,9 @@ class NotifyJob implements ShouldQueue
 
     private function onDelivered()
     {
+        // todo:
+        // В идеале шлюз рассылки должен бы вызвать webhook
+        // для полной ассинхронности
         $this->changeStatus('delivered');
     }
 

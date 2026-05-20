@@ -36,10 +36,47 @@ class NotificationController extends Controller
             new OA\Response(
                 response: 202,
                 description: 'Уведомление принято в работу',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "status",
+                            type: "string",
+                            example: "Accepted"
+                        ),
+                        new OA\Property(
+                            property: "results",
+                            type: "array",
+                            items: new OA\Items(
+                                type: "object",
+                                properties: [
+                                    new OA\Property(
+                                        property: "subscriber_id",
+                                        type: "integer",
+                                        example: "1"
+                                    ),
+                                    new OA\Property(
+                                        property: "notification_id",
+                                        type: "integer",
+                                        example: "1"
+                                    ),
+                                ]
+                            )
+                        )
+                    ]
+                )
             ),
             new OA\Response(
                 response: 200,
                 description: 'Уведомление уже в работе',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "status",
+                            type: "string",
+                            example: "Already processing"
+                        ),
+                    ]
+                )
             )
         ],
     )]
@@ -56,13 +93,16 @@ class NotificationController extends Controller
 
         try {
             $service = new Notification\PublisherService();
-            $service->publish($notificationData);
+            $results = $service->publish($notificationData);
         } catch (NotificationDuplicate $exception) {
             $status = $exception->getMessage();
             return response()->json(['status' => $status], 200);
         }
 
-        return response()->json(['status' => 'Accepted'], 202);
+        return response()->json([
+            'status' => 'Accepted',
+            'results' => $results,
+        ], 202);
     }
 
     #[OA\Get(
