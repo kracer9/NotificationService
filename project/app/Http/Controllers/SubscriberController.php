@@ -10,8 +10,9 @@ use OpenApi\Attributes as OA;
 class SubscriberController extends Controller
 {
     #[OA\Post(
-        path: '/subscribers',
+        path: '/api/subscribers',
         tags: ['Subscribers'],
+        summary: "Добавить подписчика",
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
@@ -54,8 +55,9 @@ class SubscriberController extends Controller
     }
 
     #[OA\Get(
-        path: '/subscribers',
+        path: '/api/subscribers',
         tags: ['Subscribers'],
+        summary: "Получить список подписчиков",
         responses: [
             new OA\Response(
                 response: 200,
@@ -68,8 +70,9 @@ class SubscriberController extends Controller
         ],
     )]
     #[OA\Get(
-        path: '/subscribers/page/{page}',
+        path: '/api/subscribers/page/{page}',
         tags: ['Subscribers'],
+        summary: "Получить список подписчиков",
         parameters: [
             new OA\Parameter(
                 name: "page",

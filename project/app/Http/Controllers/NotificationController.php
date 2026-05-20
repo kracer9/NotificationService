@@ -11,8 +11,9 @@ use OpenApi\Attributes as OA;
 class NotificationController extends Controller
 {
     #[OA\Post(
-        path: '/notifications',
+        path: '/api/notifications',
         tags: ['Notifications'],
+        summary: "Передать сервису уведомление для рассылки",
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
@@ -65,8 +66,9 @@ class NotificationController extends Controller
     }
 
     #[OA\Get(
-        path: '/notifications',
+        path: '/api/notifications',
         tags: ['Notifications'],
+        summary: "Получить список уведомлений",
         responses: [
             new OA\Response(
                 response: 200,
@@ -79,8 +81,9 @@ class NotificationController extends Controller
         ],
     )]
     #[OA\Get(
-        path: '/notifications/page/{page}',
+        path: '/api/notifications/page/{page}',
         tags: ['Notifications'],
+        summary: "Получить список уведомлений",
         parameters: [
             new OA\Parameter(
                 name: "page",
@@ -109,8 +112,9 @@ class NotificationController extends Controller
     }
 
     #[OA\Get(
-        path: '/notifications/listBySubscriber/{subscriberId}',
+        path: '/api/notifications/listBySubscriber/{subscriberId}',
         tags: ['Notifications'],
+        summary: "Получить список уведомлений подписчика",
         parameters: [
             new OA\Parameter(
                 name: "subscriberId",
@@ -132,8 +136,9 @@ class NotificationController extends Controller
         ],
     )]
     #[OA\Get(
-        path: '/notifications/listBySubscriber/{subscriberId}/page/{page}',
+        path: '/api/notifications/listBySubscriber/{subscriberId}/page/{page}',
         tags: ['Notifications'],
+        summary: "Получить список уведомлений подписчика",
         parameters: [
             new OA\Parameter(
                 name: "subscriberId",

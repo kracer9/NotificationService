@@ -6,12 +6,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/notifications": {
+        "/api/notifications": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
-                "operationId": "a1ae991b863d586cfe9172c9f96399ce",
+                "summary": "Получить список уведомлений",
+                "operationId": "d1b1bb2774f3243f1c2b8c3387019035",
                 "responses": {
                     "200": {
                         "description": "Список уведомлений (первая страница)",
@@ -32,7 +33,8 @@
                 "tags": [
                     "Notifications"
                 ],
-                "operationId": "5ce63496435eb78b5c4c52c7d398dfcf",
+                "summary": "Передать сервису уведомление для рассылки",
+                "operationId": "fe5e68b20e3befb480ec8fbd5d2aee0d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -95,12 +97,13 @@
                 }
             }
         },
-        "/notifications/page/{page}": {
+        "/api/notifications/page/{page}": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
-                "operationId": "4add4c37094b934f3ac932b15650e5fe",
+                "summary": "Получить список уведомлений",
+                "operationId": "0e48ec368f152a3fb377c552305adc23",
                 "parameters": [
                     {
                         "name": "page",
@@ -129,12 +132,13 @@
                 }
             }
         },
-        "/notifications/listBySubscriber/{subscriberId}": {
+        "/api/notifications/listBySubscriber/{subscriberId}": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
-                "operationId": "f7b67e7e0fd7a26fc74cc39f46da758b",
+                "summary": "Получить список уведомлений подписчика",
+                "operationId": "ae413a115960cbca53020bd0d7681d30",
                 "parameters": [
                     {
                         "name": "subscriberId",
@@ -163,12 +167,13 @@
                 }
             }
         },
-        "/notifications/listBySubscriber/{subscriberId}/page/{page}": {
+        "/api/notifications/listBySubscriber/{subscriberId}/page/{page}": {
             "get": {
                 "tags": [
                     "Notifications"
                 ],
-                "operationId": "a747336403429b137f285bc38815fb04",
+                "summary": "Получить список уведомлений подписчика",
+                "operationId": "26221f4f7c5c03b46eca6ccc2463d650",
                 "parameters": [
                     {
                         "name": "subscriberId",
@@ -206,12 +211,13 @@
                 }
             }
         },
-        "/subscribers": {
+        "/api/subscribers": {
             "get": {
                 "tags": [
                     "Subscribers"
                 ],
-                "operationId": "e4185e9d10e73eda0fa6b23775117e39",
+                "summary": "Получить список подписчиков",
+                "operationId": "b5fd9078577adbe9f216e478b37d375f",
                 "responses": {
                     "200": {
                         "description": "Список подписчиков (первая страница)",
@@ -232,7 +238,8 @@
                 "tags": [
                     "Subscribers"
                 ],
-                "operationId": "7a6bb14e6793922b9388f0d82c459e5d",
+                "summary": "Добавить подписчика",
+                "operationId": "cdbdfb57ab947416e0ecf36c82ed29e8",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -278,12 +285,13 @@
                 }
             }
         },
-        "/subscribers/page/{page}": {
+        "/api/subscribers/page/{page}": {
             "get": {
                 "tags": [
                     "Subscribers"
                 ],
-                "operationId": "3acb346be9636680927c7ed0ac6b605f",
+                "summary": "Получить список подписчиков",
+                "operationId": "c795093cad5b941e2627b568ad21f079",
                 "parameters": [
                     {
                         "name": "page",
